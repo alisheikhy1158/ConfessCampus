@@ -1,6 +1,19 @@
 import Post from '../models/Post.js';
 import User from '../models/User.js';
 
+// Helper function to format post data - hide user info if anonymous
+const formatPostData = (post) => {
+    const postObj = post.toObject ? post.toObject() : post;
+    
+    if (postObj.isAnonymous) {
+        // Remove user data for anonymous posts
+        postObj.user = null;
+        postObj.userId = null;
+    }
+    
+    return postObj;
+};
+
 // Create a new post
 const createPost = async (req, res) => {
     try {
@@ -38,10 +51,14 @@ const createPost = async (req, res) => {
 const getPosts = async (req, res) => {
     try {
         const posts = await Post.find()
-            .populate('user', 'name')
+            .populate('user', 'name bio')
             .populate('comments')
             .sort({ createdAt: -1 });
-        res.status(200).json(posts);
+        
+        // Format posts to hide user info if anonymous
+        const formattedPosts = posts.map(post => formatPostData(post));
+        
+        res.status(200).json(formattedPosts);
     } catch (error) {
         res.status(500).json({ message: 'Server error', details: error.message });
     }
@@ -52,12 +69,16 @@ const getPostById = async (req, res) => {
     try {
         const postId = req.params.id;
         const postData = await Post.findById(postId)
-            .populate('user', 'name')
+            .populate('user', 'name bio')
             .populate('comments');
         if (!postData) {
             return res.status(404).json({ message: 'Post not found' });
         }
-        res.status(200).json(postData);
+        
+        // Format post to hide user info if anonymous
+        const formattedPost = formatPostData(postData);
+        
+        res.status(200).json(formattedPost);
     } catch (error) {
         res.status(500).json({ message: 'Server error', details: error.message });
     }

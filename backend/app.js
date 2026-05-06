@@ -13,6 +13,8 @@ import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
 import postRoute from "./routes/postRoute.js";
 import messageRoute from "./routes/messageRoute.js";
+import commentRoute from "./routes/commentRoute.js";
+import reportRoute from "./routes/reportRoute.js";
 
 // Initialize Google OAuth strategy after env vars are loaded
 initializeGoogleStrategy();
@@ -44,6 +46,8 @@ app.use("/api/auth", authRoute);
 // Protected routes
 app.use("/api/users", authMiddleware, userRoute);
 app.use("/api/posts", authMiddleware, postRoute);
+app.use("/api/comments", commentRoute); // Public route with protected endpoints
+app.use("/api/reports", reportRoute); // Public route with protected endpoints
 app.use("/api/messages", authMiddleware, messageRoute);
 
 app.get('/', (req, res) => {
