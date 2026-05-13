@@ -14,9 +14,10 @@ const router = express.Router();
 router.post('/create', authMiddleware, createReport);
 
 // Admin routes (protected - would need admin middleware in production)
+// Must come before /:reportId to avoid being matched by wildcard
 router.get('/pending', authMiddleware, getPendingReports);
 router.get('/all', authMiddleware, getAllReports);
-router.put('/:reportId', authMiddleware, updateReportStatus);
 router.get('/stats', authMiddleware, getReportStats);
+router.put('/:reportId', authMiddleware, updateReportStatus);
 
 export default router;

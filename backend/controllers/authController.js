@@ -221,8 +221,8 @@ export const logoutUser = async (req, res, next) => {
     }
 };
 
-// Google OAuth callback - called by Passport
-export const googleCallback = async (req, res) => {
+// Google OAuth callback 
+export const googleCallback = async (req, res, next) => {
     try {
         if (!req.user) {
             return res.status(401).json({
@@ -244,15 +244,18 @@ export const googleCallback = async (req, res) => {
             `${frontendURL}/auth/success?accessToken=${accessToken}&refreshToken=${refreshToken}&id=${req.user._id}`
         );
     } catch (error) {
-        const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3000';
-        res.redirect(`${frontendURL}/auth/failed?error=${error.message}`);
+        next(error);
     }
 };
 
 // OAuth failure handler
-export const googleAuthFailure = (req, res) => {
-    const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3000';
-    res.redirect(`${frontendURL}/auth/failed?error=Authentication failed`);
+export const googleAuthFailure = (req, res, next) => {
+    try {
+        const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3000';
+        res.redirect(`${frontendURL}/auth/failed?error=Authentication failed`);
+    } catch (error) {
+        next(error);
+    }
 };
 
 // Get user profile

@@ -5,15 +5,26 @@ export const notFoundMiddleware = (req, res, next) => {
 };
 
 export const errorHandler = (err, req, res, next) => {
-    let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+    const statusCode = err.statusCode || res.statusCode || 500;
 
+    // Handle Mongoose errors
     if (err.name === 'CastError' && err.kind === 'ObjectId') {
-        statusCode = 404;
-        err.message = 'Resource not found';
+        return res.status(404).json({
+            success: false,
+            message: 'Resource not found'
+        });
     }
 
+    if (err.name === 'ValidationError') {
+        return res.status(400).json({
+            success: false,
+            message: err.message || 'Validation error'
+        });
+    }
+
+    // Generic error response
     res.status(statusCode).json({
         success: false,
-        message: err.message || "Internal Server Error"
+        message: err.message || 'Internal Server Error'
     });
 };

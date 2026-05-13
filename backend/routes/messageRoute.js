@@ -12,27 +12,29 @@ import {
 
 const router = express.Router();
 
-// Chat requests
+// Chat requests - must come before other routes
+router.route('/request')
+    .post(sendChatRequest);
+
 router.route('/requests')
-    .post(sendChatRequest)
     .get(getPendingRequests);
 
-router.route('/requests/:requestId/accept')
-    .post(acceptChatRequest);
+router.route('/request/:requestId/accept')
+    .put(acceptChatRequest);
 
-router.route('/requests/:requestId/reject')
-    .post(rejectChatRequest);
+router.route('/request/:requestId/reject')
+    .put(rejectChatRequest);
 
-// Chats
+// Get all chats
 router.route('/')
     .get(getChats);
 
-// Messages
-router.route('/:chatId/messages')
+// Messages - must come before /:chatId
+router.route('/message/:messageId')
+    .delete(deleteMessage);
+
+router.route('/chat/:chatId')
     .get(getMessages)
     .post(sendMessage);
-
-router.route('/messages/:messageId')
-    .delete(deleteMessage);
 
 export default router;

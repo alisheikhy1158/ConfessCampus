@@ -17,7 +17,7 @@ const formatPostData = (post) => {
 // Create a new post
 const createPost = async (req, res) => {
     try {
-        const { content } = req.body;
+        const { content, category, title, itemType, itemDescription, location, departure, destination, departureTime, seatsAvailable, tags } = req.body;
         const userId = req.user?.id; // From auth middleware
 
         if (!userId) {
@@ -28,6 +28,41 @@ const createPost = async (req, res) => {
             return res.status(400).json({ message: 'Post cannot be empty and cannot exceed 1000 characters' });
         }
 
+        if (!category || !['confession', 'discussion', 'lost-found', 'carpool'].includes(category)) {
+            return res.status(400).json({ message: 'Invalid or missing category' });
+        }
+
+        // Validate category-specific fields
+        if (category === 'lost-found') {
+            if (!itemType || !['lost', 'found'].includes(itemType)) {
+                return res.status(400).json({ message: 'Lost & Found posts require itemType (lost/found)' });
+            }
+            if (!itemDescription) {
+                return res.status(400).json({ message: 'Lost & Found posts require itemDescription' });
+            }
+            if (!location) {
+                return res.status(400).json({ message: 'Lost & Found posts require location' });
+            }
+        }
+
+        if (category === 'carpool') {
+            if (!departure || !destination) {
+                return res.status(400).json({ message: 'Carpool posts require departure and destination' });
+            }
+            if (!departureTime) {
+                return res.status(400).json({ message: 'Carpool posts require departureTime' });
+            }
+            if (!seatsAvailable || seatsAvailable < 1) {
+                return res.status(400).json({ message: 'Carpool posts require seatsAvailable (minimum 1)' });
+            }
+        }
+
+        if (category === 'discussion') {
+            if (!title) {
+                return res.status(400).json({ message: 'Discussion posts require a title' });
+            }
+        }
+
         // Get user's anonymity preference from profile
         const user = await User.findById(userId);
         if (!user) {
@@ -36,24 +71,63 @@ const createPost = async (req, res) => {
 
         const newPost = new Post({
             content,
-            isAnonymous: user.isAnonymous, // Use user's profile setting
-            user: userId
+            category,
+            title: title || null,
+            isAnonymous: user.isAnonymous,
+            user: userId,
+            itemType: itemType || null,
+            itemDescription: itemDescription || null,
+            location: location || null,
+            departure: departure || null,
+            destination: destination || null,
+            departureTime: departureTime || null,
+            seatsAvailable: seatsAvailable || null,
+            tags: tags || []
         });
 
         const savedPost = await newPost.save();
+        await savedPost.populate('user', 'name bio');
         res.status(201).json(savedPost);
     } catch (error) {
         res.status(500).json({ message: 'Server error', details: error.message });
     }
 };
 
-// Get all posts
+// Get all posts with filtering and search
 const getPosts = async (req, res) => {
     try {
-        const posts = await Post.find()
+        const { category, search, tag, sort = '-createdAt' } = req.query;
+        const filter = {};
+
+        // Filter by category
+        if (category) {
+            if (!['confession', 'discussion', 'lost-found', 'carpool'].includes(category)) {
+                return res.status(400).json({ message: 'Invalid category' });
+            }
+            filter.category = category;
+        }
+
+        // Search in content, title, and other text fields
+        if (search) {
+            filter.$or = [
+                { content: { $regex: search, $options: 'i' } },
+                { title: { $regex: search, $options: 'i' } },
+                { itemDescription: { $regex: search, $options: 'i' } },
+                { location: { $regex: search, $options: 'i' } },
+                { departure: { $regex: search, $options: 'i' } },
+                { destination: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        // Filter by tag (for discussion posts)
+        if (tag) {
+            filter.tags = { $in: [tag] };
+        }
+
+        const posts = await Post.find(filter)
             .populate('user', 'name bio')
             .populate('comments')
-            .sort({ createdAt: -1 });
+            .sort(sort);
         
         // Format posts to hide user info if anonymous
         const formattedPosts = posts.map(post => formatPostData(post));
@@ -88,15 +162,15 @@ const getPostById = async (req, res) => {
 const updatePost = async (req, res) => {
     try {
         const postId = req.params.id;
-        const { content } = req.body; // Don't accept isAnonymous from request
+        const { content, title, isResolved, seatsAvailable } = req.body;
         const userId = req.user?.id; // From auth middleware
 
         if (!userId) {
             return res.status(401).json({ message: 'Unauthorized - User not found' });
         }
 
-        if (!content || content.length > 1000) {
-            return res.status(400).json({ message: 'Content is required and must not exceed 1000 characters' });
+        if (content && content.length > 1000) {
+            return res.status(400).json({ message: 'Content must not exceed 1000 characters' });
         }
 
         const postData = await Post.findById(postId);
@@ -108,8 +182,19 @@ const updatePost = async (req, res) => {
             return res.status(403).json({ message: 'Unauthorized - Can only edit your own posts' });
         }
 
-        postData.content = content;
+        // Update allowed fields based on category
+        if (content) postData.content = content;
+        if (title && postData.category === 'discussion') postData.title = title;
+        if (isResolved !== undefined && postData.category === 'discussion') postData.isResolved = isResolved;
+        if (seatsAvailable !== undefined && postData.category === 'carpool') {
+            if (seatsAvailable < 1) {
+                return res.status(400).json({ message: 'Seats available must be at least 1' });
+            }
+            postData.seatsAvailable = seatsAvailable;
+        }
+
         const updatedPost = await postData.save();
+        await updatedPost.populate('user', 'name bio');
         res.status(200).json(updatedPost);
     } catch (error) {
         res.status(500).json({ message: 'Server error', details: error.message });

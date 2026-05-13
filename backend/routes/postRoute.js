@@ -18,5 +18,7 @@ router.route('/:id/like')
 router.route('/:id/unlike')
     .post(unlikePost);
 
+// Category-specific routes (alternative to query params)
+router.get('/category/:category', getPosts);
 
 export default router;

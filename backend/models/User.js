@@ -45,18 +45,17 @@ const userSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
-// Hash password before saving (only if password exists and is modified)
-userSchema.pre('save', async function(next) {
+
+userSchema.pre('save', async function() {
     if (!this.password || !this.isModified('password')) {
-        return next();
+        return;
     }
 
     try {
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
-        next();
     } catch (error) {
-        next(error);
+        throw error;
     }
 });
 

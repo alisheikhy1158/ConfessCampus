@@ -20,6 +20,6 @@ const messageSchema = new mongoose.Schema({
         default: Date.now,
         expires: 86400 // MongoDB will automatically delete the message after 24 hours
     }
-}); // No timestamps: true needed here because we manually define createdAt for the TTL index
+}); 
 
 export default mongoose.model('Message', messageSchema);

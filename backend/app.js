@@ -51,7 +51,7 @@ app.use("/api/reports", reportRoute); // Public route with protected endpoints
 app.use("/api/messages", authMiddleware, messageRoute);
 
 app.get('/', (req, res) => {
-    res.send('ConfessCampus API running');
+    res.send('Whisper Campus API running');
 });
 
 app.use(errorHandler);

@@ -3,7 +3,8 @@ import { getUser, updateProfile } from "../controllers/authController.js";
 
 const router = express.Router();
 
-router.route('/:id').get(getUser);
+// Must come before /:id to avoid being matched by wildcard
 router.route('/profile/update').post(updateProfile);
+router.route('/:id').get(getUser);
 
 export default router;

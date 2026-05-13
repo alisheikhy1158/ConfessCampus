@@ -24,7 +24,7 @@ const chatSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// Ensure users are sorted to prevent duplicate chats between same users
+
 chatSchema.index({ user1: 1, user2: 1 }, { unique: true });
 
 export default mongoose.model('Chat', chatSchema);
