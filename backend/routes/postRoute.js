@@ -1,11 +1,14 @@
 import express from 'express';
-import { createPost, getPosts, getPostById, updatePost, deletePost, likePost, unlikePost } from '../controllers/postController.js';
+import { createPost, getPosts, getPostById, updatePost, deletePost, likePost, unlikePost, getUserPublicPosts } from '../controllers/postController.js';
 
 const router = express.Router();
 
 router.route('/')
     .get(getPosts)
     .post(createPost);
+
+router.route('/user/:userId')
+    .get(getUserPublicPosts);
 
 router.route('/:id')
     .get(getPostById)

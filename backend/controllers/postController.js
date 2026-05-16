@@ -283,4 +283,28 @@ const unlikePost = async (req, res) => {
     }
 };
 
-export { createPost, getPosts, getPostById, updatePost, deletePost, likePost, unlikePost };
+// Get user's public posts (for profile - excludes anonymous posts)
+const getUserPublicPosts = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'User ID is required' });
+        }
+
+        // Get only non-anonymous posts from this user
+        const posts = await Post.find({
+            user: userId,
+            isAnonymous: false
+        })
+            .populate('user', 'name bio')
+            .populate('comments')
+            .sort({ createdAt: -1 });
+
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', details: error.message });
+    }
+};
+
+export { createPost, getPosts, getPostById, updatePost, deletePost, likePost, unlikePost, getUserPublicPosts };
