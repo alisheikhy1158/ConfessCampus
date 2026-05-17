@@ -7,14 +7,6 @@ const Logo = () => (
     onClick={() => window.location.href = '/feed'}
     style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
   >
-    <div style={{
-      width: '36px', height: '36px', borderRadius: 'var(--radius-md)',
-      background: 'linear-gradient(135deg, 'var(--primary)', #9333EA)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: '18px', boxShadow: '0 4px 12px rgba(91, 91, 214, 0.25)',
-    }}>
-      W
-    </div>
     <span style={{
       fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-lg)',
       color: 'var(--text)', letterSpacing: '-0.5px',
@@ -38,8 +30,8 @@ const SearchBar = ({ onSearch }) => {
       <div style={{ position: 'relative' }}>
         <span style={{
           position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
-          color: 'var(--text-muted)', fontSize: '16px', pointerEvents: 'none',
-        }}>🔍</span>
+          color: 'var(--text-muted)', fontSize: '14px', pointerEvents: 'none', fontWeight: 600,
+        }}>SEARCH</span>
         <input
           value={q}
           onChange={e => setQ(e.target.value)}
@@ -67,7 +59,7 @@ const SearchBar = ({ onSearch }) => {
   );
 };
 
-const NavLink = ({ to, icon, label, active }) => {
+const NavLink = ({ to, label, active }) => {
   const navigate = useNavigate();
   return (
     <button
@@ -83,7 +75,6 @@ const NavLink = ({ to, icon, label, active }) => {
       onMouseEnter={e => { if (!active) { e.currentTarget.style.background = 'var(--bg-muted)'; e.currentTarget.style.color = 'var(--text)'; } }}
       onMouseLeave={e => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
     >
-      <span>{icon}</span>
       <span className="hide-mobile">{label}</span>
     </button>
   );
@@ -108,7 +99,7 @@ const UserMenu = ({ user, logout }) => {
         onClick={() => setOpen(!open)}
         style={{
           width: '38px', height: '38px', borderRadius: 'var(--radius-full)',
-          background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+          background: 'var(--primary)',
           color: 'var(--white)', fontFamily: 'var(--font-heading)', fontWeight: 700,
           fontSize: 'var(--text-sm)', display: 'flex', alignItems: 'center',
           justifyContent: 'center', border: `2px solid ${'var(--primary-light)'}`,
@@ -132,9 +123,9 @@ const UserMenu = ({ user, logout }) => {
             <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', marginTop: '2px' }}>@{user?.username}</div>
           </div>
           {[
-            { icon: 'P', label: 'My Profile', action: () => { navigate(`/profile/${user?._id}`); setOpen(false); } },
-            { icon: 'M', label: 'Messages', action: () => { navigate('/messages'); setOpen(false); } },
-            { icon: 'S', label: 'Settings', action: () => { navigate('/settings'); setOpen(false); } },
+            { label: 'My Profile', action: () => { navigate(`/profile/${user?._id}`); setOpen(false); } },
+            { label: 'Messages', action: () => { navigate('/messages'); setOpen(false); } },
+            { label: 'Settings', action: () => { navigate('/settings'); setOpen(false); } },
           ].map(item => (
             <button
               key={item.label}
@@ -148,7 +139,7 @@ const UserMenu = ({ user, logout }) => {
               onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-muted)'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <span>{item.icon}</span> {item.label}
+              {item.label}
             </button>
           ))}
           <div style={{ borderTop: `1px solid ${'var(--border-light)'}` }}>
@@ -163,7 +154,7 @@ const UserMenu = ({ user, logout }) => {
               onMouseEnter={e => e.currentTarget.style.background = 'var(--rose-light)'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <span>🚪</span> Sign Out
+              <span></span> Sign Out
             </button>
           </div>
         </div>
@@ -175,13 +166,13 @@ const UserMenu = ({ user, logout }) => {
 const MobileMenu = ({ open, onClose, user, logout }) => {
   const navigate = useNavigate();
   const links = [
-    { to: '/feed', icon: '🏠', label: 'Feed' },
-    { to: '/messages', icon: '✉️', label: 'Messages' },
-    { to: '/search', icon: '🔍', label: 'Search' },
-    { to: '/create', icon: '✏️', label: 'Create Post' },
-    { to: `/profile/${user?._id}`, icon: '👤', label: 'My Profile' },
-    { to: '/about', icon: 'ℹ️', label: 'About' },
-    { to: '/contact', icon: '📬', label: 'Contact' },
+    { to: '/feed', label: 'Feed' },
+    { to: '/messages', label: 'Messages' },
+    { to: '/search', label: 'Search' },
+    { to: '/create', label: 'Create Post' },
+    { to: `/profile/${user?._id}`, label: 'My Profile' },
+    { to: '/about', label: 'About' },
+    { to: '/contact', label: 'Contact' },
   ];
 
   if (!open) return null;
@@ -249,7 +240,7 @@ const MobileMenu = ({ open, onClose, user, logout }) => {
                 borderRadius: 'var(--radius-md)', fontWeight: 600,
               }}
             >
-              <span>🚪</span> Sign Out
+              <span></span> Sign Out
             </button>
           </div>
         )}
@@ -295,9 +286,9 @@ const Navbar = () => {
           </div>
 
           <nav className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <NavLink to="/feed" icon="🏠" label="Feed" active={isActive('/feed')} />
-            <NavLink to="/messages" icon="✉️" label="DMs" active={isActive('/messages')} />
-            <NavLink to="/about" icon="ℹ️" label="About" active={isActive('/about')} />
+            <NavLink to="/feed" label="Feed" active={isActive('/feed')} />
+            <NavLink to="/messages" label="DMs" active={isActive('/messages')} />
+            <NavLink to="/about" label="About" active={isActive('/about')} />
           </nav>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

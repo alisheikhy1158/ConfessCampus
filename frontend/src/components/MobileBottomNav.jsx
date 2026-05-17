@@ -46,7 +46,7 @@ const MobileBottomNav = () => {
             {item.highlight ? (
               <div style={{
                 width: '44px', height: '44px', borderRadius: 'var(--radius-full)',
-                background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+                background: 'var(--primary)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '20px', boxShadow: `0 4px 12px ${'var(--primary)'}40`,
                 marginTop: '-20px',

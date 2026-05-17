@@ -3,12 +3,11 @@ import Layout from '../components/Layout';
 import { Input, Textarea, Button } from '../components/FormComponents';
 import { useToast } from '../components/Toast';
 
-const ContactCard = ({ emoji, title, desc, sub }) => (
+const ContactCard = ({ title, desc, sub }) => (
   <div style={{
     padding: '24px', background: 'var(--white)', borderRadius: 'var(--radius-xl)',
     border: `1px solid ${'var(--border)'}`, boxShadow: 'var(--shadow-sm)',
   }}>
-    <div style={{ fontSize: '32px', marginBottom: '12px' }}>{emoji}</div>
     <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-base)', color: 'var(--text)', marginBottom: '4px' }}>{title}</h3>
     <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginBottom: '6px' }}>{desc}</p>
     {sub && <p style={{ fontSize: 'var(--text-xs)', color: 'var(--primary)', fontWeight: 600 }}>{sub}</p>}
@@ -45,22 +44,22 @@ const Contact = () => {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setSubmitting(true);
     await new Promise(r => setTimeout(r, 1200)); // simulate send
-    toast.success('Message sent! We\'ll get back to you within 24 hours 💜');
+    toast.success('Message sent! We\'ll get back to you within 24 hours');
     setSent(true);
     setSubmitting(false);
   };
 
   const contactItems = [
-    { emoji: '📧', title: 'Email Us', desc: 'For general inquiries and support', sub: 'support@whispercampus.com' },
-    { emoji: '⚡', title: 'Response Time', desc: 'We typically respond within', sub: '24 hours on weekdays' },
-    { emoji: '🔒', title: 'Privacy Concerns', desc: 'For privacy & data requests', sub: 'privacy@whispercampus.com' },
-    { emoji: '🚨', title: 'Report Abuse', desc: 'To report urgent safety issues', sub: 'safety@whispercampus.com' },
+    { title: 'Email Us', desc: 'For general inquiries and support', sub: 'support@whispercampus.com' },
+    { title: 'Response Time', desc: 'We typically respond within', sub: '24 hours on weekdays' },
+    { title: 'Privacy Concerns', desc: 'For privacy & data requests', sub: 'privacy@whispercampus.com' },
+    { title: 'Report Abuse', desc: 'To report urgent safety issues', sub: 'safety@whispercampus.com' },
   ];
 
   const faqs = [
     { q: 'Is my anonymity truly protected?', a: 'Yes. When you post anonymously, we strip all identifying information before storing. Not even our team can trace an anonymous post back to you.' },
     { q: 'How do I delete my account?', a: 'Go to Settings → Account → Delete Account. All your data, including anonymous posts, will be permanently removed.' },
-    { q: 'Can I report a post?', a: 'Yes! Click the ⚑ flag icon on any post or comment. Our moderation team reviews all reports within 24 hours.' },
+    { q: 'Can I report a post?', a: 'Yes! Click the flag icon on any post or comment. Our moderation team reviews all reports within 24 hours.' },
     { q: 'Why did my post get removed?', a: 'Posts are removed if they violate our community guidelines — hate speech, harassment, spam, or illegal content.' },
   ];
 
@@ -68,14 +67,14 @@ const Contact = () => {
     <Layout>
       {/* Hero */}
       <div style={{
-        background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+        background: 'var(--primary)',
         padding: '60px 24px', textAlign: 'center',
       }}>
         <h1 style={{
           fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-3xl)',
           color: 'var(--white)', marginBottom: '12px', letterSpacing: '-0.5px',
         }}>
-          📬 Get in Touch
+          Get in Touch
         </h1>
         <p style={{ fontSize: 'var(--text-base)', color: 'rgba(255,255,255,0.82)', maxWidth: '460px', margin: '0 auto', lineHeight: 1.7 }}>
           Have questions, concerns, or suggestions? We'd love to hear from you.
@@ -113,7 +112,7 @@ const Contact = () => {
             <div style={{ padding: '24px' }}>
               {sent ? (
                 <div style={{ textAlign: 'center', padding: '32px 0' }}>
-                  <div style={{ fontSize: '56px', marginBottom: '16px' }}>✅</div>
+                  <div style={{ fontSize: '56px', marginBottom: '16px' }}>Success!</div>
                   <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-lg)', color: 'var(--text)', marginBottom: '8px' }}>
                     Message Sent!
                   </h3>
@@ -135,10 +134,10 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <Input label="Your Name" name="name" value={form.name}
                     onChange={handleChange} placeholder="John Doe"
-                    error={errors.name} required icon="👤" />
+                    error={errors.name} required />
                   <Input label="Email" name="email" type="email" value={form.email}
                     onChange={handleChange} placeholder="john@university.edu"
-                    error={errors.email} required icon="📧" />
+                    error={errors.email} required />
                   <Input label="Subject" name="subject" value={form.subject}
                     onChange={handleChange} placeholder="What's this about?"
                     error={errors.subject} required />
@@ -146,7 +145,7 @@ const Contact = () => {
                     onChange={handleChange} placeholder="Tell us more..."
                     error={errors.message} required rows={5} maxLength={1000} />
                   <Button type="submit" fullWidth loading={submitting} size="lg">
-                    Send Message 📬
+                    Send Message
                   </Button>
                 </form>
               )}
@@ -159,7 +158,7 @@ const Contact = () => {
               fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-lg)',
               color: 'var(--text)', marginBottom: '20px',
             }}>
-              ❓ Frequently Asked
+              Frequently Asked
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {faqs.map((faq, i) => (

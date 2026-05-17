@@ -218,7 +218,7 @@ const CreatePost = () => {
                   name="content"
                   value={form.content}
                   onChange={handleChange}
-                  placeholder="Share what's on your mind... this is a safe space 💜"
+                  placeholder="Share what's on your mind... this is a safe space"
                   error={errors.content}
                   required
                   maxLength={1000}
@@ -254,8 +254,8 @@ const CreatePost = () => {
                     onChange={handleChange}
                     placeholder="Select status"
                     options={[
-                      { value: 'lost', label: '❌ I Lost Something' },
-                      { value: 'found', label: '✅ I Found Something' },
+                      { value: 'lost', label: 'I Lost Something' },
+                      { value: 'found', label: 'I Found Something' },
                     ]}
                     error={errors.itemType}
                     required
@@ -263,7 +263,7 @@ const CreatePost = () => {
                   <Input label="Location" name="location" value={form.location}
                     onChange={handleChange}
                     placeholder="e.g. Library G-08, Main Gate..."
-                    icon="📍" error={errors.location} />
+                    icon="" error={errors.location} />
                   <Textarea label="Description" name="itemDescription"
                     value={form.itemDescription} onChange={handleChange}
                     placeholder="Describe the item — color, size, unique features..."
@@ -285,10 +285,10 @@ const CreatePost = () => {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <Input label="From (Departure)" name="departure" value={form.departure}
                       onChange={handleChange} placeholder="University Gate A"
-                      icon="📍" error={errors.departure} required />
+                      error={errors.departure} required />
                     <Input label="To (Destination)" name="destination" value={form.destination}
                       onChange={handleChange} placeholder="City Center Mall"
-                      icon="🏁" error={errors.destination} required />
+                      error={errors.destination} required />
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <Input label="Departure Time" name="departureTime"
@@ -299,7 +299,7 @@ const CreatePost = () => {
                     <Input label="Seats Available" name="seatsAvailable"
                       type="number" value={form.seatsAvailable}
                       onChange={handleChange} placeholder="3"
-                      icon="💺" error={errors.seatsAvailable} required />
+                      error={errors.seatsAvailable} required />
                   </div>
                   <Textarea label="Details" name="content" value={form.content}
                     onChange={handleChange}
@@ -310,7 +310,7 @@ const CreatePost = () => {
 
               {/* Anonymous Toggle */}
               <Toggle
-                label={`Post ${form.isAnonymous ? 'Anonymously 👤' : 'Publicly 😊'}`}
+                label={`Post ${form.isAnonymous ? 'Anonymously' : 'Publicly'}`}
                 checked={form.isAnonymous}
                 onChange={val => setForm(prev => ({ ...prev, isAnonymous: val }))}
                 description={form.isAnonymous
@@ -322,7 +322,7 @@ const CreatePost = () => {
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', paddingTop: '8px' }}>
                 <Button variant="secondary" onClick={() => setStep(1)}>← Back</Button>
                 <Button onClick={handleSubmit} loading={submitting} size="lg">
-                  Publish Post 🚀
+                  Publish Post
                 </Button>
               </div>
             </div>

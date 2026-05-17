@@ -80,7 +80,7 @@ const Search = () => {
             fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-2xl)',
             color: 'var(--text)', letterSpacing: '-0.5px', marginBottom: '6px',
           }}>
-            🔍 Search
+            Search Results
           </h1>
           <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
             Find posts, confessions, lost items, and carpools across campus
@@ -97,7 +97,7 @@ const Search = () => {
             <span style={{
               position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)',
               fontSize: '20px', pointerEvents: 'none',
-            }}>🔍</span>
+            }}>�</span>
             <input
               value={query}
               onChange={handleQueryChange}
@@ -160,13 +160,13 @@ const Search = () => {
           <ErrorState message={error} onRetry={() => doSearch(q, activeCategory, tag)} />
         ) : !hasSearched ? (
           <EmptyState
-            emoji="🔍"
+            emoji=""
             title="Start searching"
             description="Type a keyword above to search across all posts and categories"
           />
         ) : results.length === 0 ? (
           <EmptyState
-            emoji="😔"
+            emoji=""
             title="No results found"
             description={`No posts match "${q || tag}". Try different keywords or remove filters.`}
             action={

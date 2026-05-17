@@ -27,11 +27,11 @@ const Terms = () => (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
       {/* Header */}
       <div style={{
-        background: `linear-gradient(135deg, ${'var(--primary-light)'}, ${'var(--rose-light)'})`,
+        background: 'var(--bg-light)',
         borderRadius: 'var(--radius-xl)', padding: '32px', marginBottom: '40px',
         border: `1px solid ${'var(--primary-mid)'}`,
       }}>
-        <div style={{ fontSize: '48px', marginBottom: '12px' }}>📋</div>
+        <div style={{ fontSize: '48px', marginBottom: '12px' }}></div>
         <h1 style={{
           fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-2xl)',
           color: 'var(--text)', marginBottom: '8px', letterSpacing: '-0.5px',
@@ -80,15 +80,15 @@ const Terms = () => (
         <Section number="4" title="Prohibited Content & Behavior">
           <p style={{ marginBottom: '12px' }}>You agree <strong style={{ color: 'var(--text)' }}>not</strong> to post, share, or engage in:</p>
           {[
-            { icon: '🚫', text: 'Hate speech, racism, sexism, or discrimination based on any protected characteristic' },
-            { icon: '🚫', text: 'Harassment, bullying, threats, or targeted abuse of individuals' },
-            { icon: '🚫', text: 'Sexual or explicit content of any kind' },
-            { icon: '🚫', text: 'Content involving minors in any inappropriate context' },
-            { icon: '🚫', text: 'Doxxing or sharing private personal information of others without consent' },
-            { icon: '🚫', text: 'Spam, phishing, or any form of deceptive content' },
-            { icon: '🚫', text: 'Content that promotes self-harm, suicide, or dangerous activities' },
-            { icon: '🚫', text: 'Impersonating other users, public figures, or WhisperCampus staff' },
-            { icon: '🚫', text: 'Illegal content of any kind, including copyrighted material without authorization' },
+            { text: 'Hate speech, racism, sexism, or discrimination based on any protected characteristic' },
+            { text: 'Harassment, bullying, threats, or targeted abuse of individuals' },
+            { text: 'Sexual or explicit content of any kind' },
+            { text: 'Content involving minors in any inappropriate context' },
+            { text: 'Doxxing or sharing private personal information of others without consent' },
+            { text: 'Spam, phishing, or any form of deceptive content' },
+            { text: 'Content that promotes self-harm, suicide, or dangerous activities' },
+            { text: 'Impersonating other users, public figures, or WhisperCampus staff' },
+            { text: 'Illegal content of any kind, including copyrighted material without authorization' },
           ].map((item, i) => (
             <div key={i} style={{
               display: 'flex', gap: '10px', padding: '8px 12px', borderRadius: 'var(--radius-sm)',

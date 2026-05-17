@@ -23,7 +23,7 @@ const AuthCallback = () => {
       try {
         const user = JSON.parse(decodeURIComponent(userRaw));
         login(user, accessToken, refreshToken || '');
-        toast.success(`Welcome, ${user.name}! 🎉`);
+        toast.success(`Welcome, ${user.name}!`);
         navigate('/feed', { replace: true });
       } catch {
         toast.error('Login failed. Please try again.');

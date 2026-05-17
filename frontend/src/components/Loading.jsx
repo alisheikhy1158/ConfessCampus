@@ -23,7 +23,7 @@ export const FullPageLoader = () => (
 
 // ─── SkeletonCard ─────────────────────────────────────────────────────
 const shimmerStyle = {
-  background: 'linear-gradient(90deg, #f0f0f8 25%, #e8e8f5 50%, #f0f0f8 75%)',
+  background: '#f5f5f5',
   backgroundSize: '1000px 100%',
   animation: 'shimmer 1.5s infinite linear',
   borderRadius: 'var(--radius-sm)',
@@ -62,7 +62,7 @@ export const SkeletonCard = () => (
 );
 
 // ─── Empty State ──────────────────────────────────────────────────────
-export const EmptyState = ({ emoji = '🌐', title = 'Nothing here yet', description, action }) => (
+export const EmptyState = ({ emoji = '', title = 'Nothing here yet', description, action }) => (
   <div style={{
     display: 'flex', flexDirection: 'column', alignItems: 'center',
     justifyContent: 'center', padding: '64px 24px', gap: '16px', textAlign: 'center',
@@ -86,7 +86,6 @@ export const ErrorState = ({ message = 'Something went wrong', onRetry }) => (
     display: 'flex', flexDirection: 'column', alignItems: 'center',
     justifyContent: 'center', padding: '48px 24px', gap: '14px', textAlign: 'center',
   }}>
-    <div style={{ fontSize: '48px' }}>😵</div>
     <p style={{ fontSize: '15px', color: 'var(--error)' }}>{message}</p>
     {onRetry && (
       <button

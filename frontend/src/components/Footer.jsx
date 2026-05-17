@@ -54,10 +54,10 @@ const Footer = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
               <div style={{
                 width: '40px', height: '40px', borderRadius: 'var(--radius-md)',
-                background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+                background: 'var(--primary)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '20px',
-              }}>🤫</div>
+              }}></div>
               <span style={{
                 fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-lg)',
                 color: 'var(--white)',
@@ -72,17 +72,7 @@ const Footer = () => {
               Your campus, unfiltered. Share, connect, and confess — anonymously or not.
             </p>
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-              {['🐦', '📸', '💼'].map((emoji, i) => (
-                <button key={i} style={{
-                  width: '36px', height: '36px', borderRadius: 'var(--radius-full)',
-                  background: 'rgba(255,255,255,0.1)', border: 'none', cursor: 'pointer',
-                  fontSize: '15px', transition: 'var(--transition-fast)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'var(--primary)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-                >{emoji}</button>
-              ))}
+              {/* Social links empty */}
             </div>
           </div>
 
@@ -124,10 +114,10 @@ const Footer = () => {
           alignItems: 'center', gap: '12px',
         }}>
           <p style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.35)' }}>
-            © 2026 WhisperCampus. Made with 💜 for university students.
+            © 2026 WhisperCampus. Made for university students.
           </p>
           <p style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.35)' }}>
-            🔒 Your anonymity is protected. Always.
+            Your anonymity is protected. Always.
           </p>
         </div>
       </div>

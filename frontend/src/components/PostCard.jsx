@@ -79,7 +79,7 @@ const PostCard = ({ post, onUpdate }) => {
         }}>
           {post.departure && post.destination && (
             <span style={{ fontSize: 'var(--text-xs)', color: meta.text, fontWeight: 600 }}>
-              {post.departure} -> {post.destination}
+              {post.departure} {'\u2192'} {post.destination}
             </span>
           )}
           {post.seatsAvailable !== undefined && (
@@ -222,7 +222,7 @@ const PostCard = ({ post, onUpdate }) => {
           onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-muted)'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          <span>💬</span>
+          Comments
           <span>{post.commentsCount ?? post.comments?.length ?? 0}</span>
         </button>
 
@@ -242,7 +242,7 @@ const PostCard = ({ post, onUpdate }) => {
           onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-muted)'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          <span>🔗</span>
+          <span></span>
         </button>
 
         <div style={{ flex: 1 }} />

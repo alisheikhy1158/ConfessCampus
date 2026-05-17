@@ -114,7 +114,7 @@ const Profile = () => {
           {/* Cover banner */}
           <div style={{
             height: '120px',
-            background: `linear-gradient(135deg, ${'var(--primary)'} 0%, #9333EA 50%, ${'var(--rose)'} 100%)`,
+            background: 'var(--primary)',
             position: 'relative',
           }}>
             <div style={{
@@ -128,7 +128,7 @@ const Profile = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '-36px', marginBottom: '16px' }}>
               <div style={{
                 width: '80px', height: '80px', borderRadius: 'var(--radius-full)',
-                background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+                background: 'var(--primary)',
                 border: `4px solid ${'var(--white)'}`, boxShadow: 'var(--shadow-md)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-xl)',
@@ -184,7 +184,7 @@ const Profile = () => {
                   </p>
                 )}
                 <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
-                  📅 Joined {joinDate}
+                  Joined {joinDate}
                 </p>
               </>
             )}
@@ -214,7 +214,7 @@ const Profile = () => {
             color: 'var(--text)', marginBottom: '16px',
             display: 'flex', alignItems: 'center', gap: '8px',
           }}>
-            📝 Public Posts
+            Public Posts
             <span style={{
               fontSize: 'var(--text-xs)', padding: '3px 10px', borderRadius: 'var(--radius-full)',
               background: 'var(--primary-light)', color: 'var(--primary)', fontWeight: 600,
@@ -227,7 +227,7 @@ const Profile = () => {
             </div>
           ) : posts.length === 0 ? (
             <EmptyState
-              emoji="📭"
+              emoji=""
               title="No public posts yet"
               description={isMe ? "Create your first post to get started!" : "This user hasn't made any public posts."}
               action={isMe && (
@@ -240,7 +240,7 @@ const Profile = () => {
                 <PostCard key={post._id} post={post} />
               ))}
               {posts.filter(p => !p.isAnonymous).length === 0 && (
-                <EmptyState emoji="👤" title="Only anonymous posts" description="This user has only posted anonymously." />
+                <EmptyState title="Only anonymous posts" description="This user has only posted anonymously." />
               )}
             </div>
           )}

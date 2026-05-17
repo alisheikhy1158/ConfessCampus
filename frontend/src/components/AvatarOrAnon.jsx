@@ -7,13 +7,12 @@ const AvatarOrAnon = ({ user, isAnonymous, size = 40 }) => {
       <div style={{
         width: `${size}px`, height: `${size}px`,
         borderRadius: 'var(--radius-full)',
-        background: 'linear-gradient(135deg, #E5E7EB, #D1D5DB)',
+        background: '#e5e5e5',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: size > 36 ? '18px' : '14px',
         flexShrink: 0,
         border: '2px solid #F3F4F6',
       }}>
-        👤
       </div>
     );
   }
@@ -35,7 +34,7 @@ const AvatarOrAnon = ({ user, isAnonymous, size = 40 }) => {
       style={{
         width: `${size}px`, height: `${size}px`,
         borderRadius: 'var(--radius-full)',
-        background: `linear-gradient(135deg, ${bg}, hsl(${(hue + 40) % 360}, 65%, 55%))`,
+        background: 'var(--primary)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         color: 'var(--white)', fontFamily: 'var(--font-heading)', fontWeight: 700,
         fontSize, flexShrink: 0,

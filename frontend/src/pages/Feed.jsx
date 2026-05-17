@@ -104,7 +104,7 @@ const CampusTip = () => {
   const tip = tips[Math.floor(Date.now() / 86400000) % tips.length];
   return (
     <div style={{
-      background: `linear-gradient(135deg, ${'var(--primary-light)'}, ${'var(--rose-light)'})`,
+      background: 'var(--bg-light)',
       borderRadius: 'var(--radius-xl)', padding: '16px 18px',
       border: `1px solid ${'var(--primary-mid)'}`,
     }}>
@@ -213,7 +213,7 @@ const Feed = () => {
                     fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-xl)',
                     color: 'var(--text)', letterSpacing: '-0.5px',
                   }}>
-                    {category ? (categoryMeta[category]?.emoji + ' ' + categoryMeta[category]?.label) : '🏠 Campus Feed'}
+                    {category ? categoryMeta[category]?.label : 'Campus Feed'}
                   </h1>
                   <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: '2px' }}>
                     {category ? `Browse all ${categoryMeta[category]?.label?.toLowerCase()} posts` : 'All posts from your campus community'}
@@ -232,7 +232,7 @@ const Feed = () => {
                     onMouseEnter={e => { e.currentTarget.style.background = 'var(--primary-hover)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                   >
-                    ✏️ New Post
+                    New Post
                   </button>
                 )}
               </div>
@@ -251,7 +251,6 @@ const Feed = () => {
                 <ErrorState message={error} onRetry={() => fetchPosts(1, category, true)} />
               ) : posts.length === 0 ? (
                 <EmptyState
-                  emoji={category ? categoryMeta[category]?.emoji : '📭'}
                   title="No posts yet"
                   description={category ? `Be the first to post in ${categoryMeta[category]?.label}!` : 'The feed is empty. Be the first to post!'}
                   action={user && (
@@ -263,7 +262,7 @@ const Feed = () => {
                         fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: 'var(--text-sm)',
                       }}
                     >
-                      ✏️ Create First Post
+                      Create First Post
                     </button>
                   )}
                 />
@@ -287,7 +286,7 @@ const Feed = () => {
                       textAlign: 'center', padding: '24px',
                       color: 'var(--text-muted)', fontSize: 'var(--text-sm)',
                     }}>
-                      🎉 You've seen all posts!
+                      You've seen all posts!
                     </div>
                   )}
                 </div>
@@ -298,10 +297,10 @@ const Feed = () => {
             <aside className="hide-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'sticky', top: '88px' }}>
               <TrendingTags onTagClick={handleTagClick} />
               <div style={{
-                background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+                background: 'var(--primary)',
                 borderRadius: 'var(--radius-xl)', padding: '20px', color: 'var(--white)',
               }}>
-                <div style={{ fontSize: '28px', marginBottom: '10px' }}>🤫</div>
+                <div style={{ fontSize: '28px', marginBottom: '10px' }}></div>
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-base)', marginBottom: '8px' }}>
                   Anonymous Posts
                 </h3>
@@ -339,7 +338,7 @@ const Feed = () => {
           style={{
             position: 'fixed', bottom: '24px', right: '24px',
             width: '56px', height: '56px', borderRadius: 'var(--radius-full)',
-            background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+            background: 'var(--primary)',
             color: 'var(--white)', fontSize: '24px', border: 'none',
             cursor: 'pointer', boxShadow: 'var(--shadow-xl)', zIndex: 50,
             display: 'flex', alignItems: 'center', justifyContent: 'center',

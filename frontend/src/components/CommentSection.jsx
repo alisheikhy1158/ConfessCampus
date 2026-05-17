@@ -59,7 +59,7 @@ const CommentItem = ({ comment, postOwnerId, onDelete }) => {
           onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'none'; }}
           title="Delete comment"
         >
-          {deleting ? '...' : '🗑️'}
+          {deleting ? '...' : 'Delete'}
         </button>
       )}
     </div>
@@ -125,7 +125,7 @@ const CommentSection = ({ postId, commentsCount }) => {
         display: 'flex', alignItems: 'center', gap: '8px',
       }}>
         <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-md)', color: 'var(--text)' }}>
-          💬 Comments
+          Comments
         </span>
         <span style={{
           padding: '2px 10px', borderRadius: 'var(--radius-full)', background: 'var(--primary-light)',
@@ -183,7 +183,7 @@ const CommentSection = ({ postId, commentsCount }) => {
                         background: 'var(--white)', transition: 'var(--transition-fast)',
                       }} />
                     </div>
-                    <span>{isAnonymous ? '👤 Anonymous' : '😊 Public'}</span>
+                    <span>{isAnonymous ? 'Anonymous' : 'Public'}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontSize: 'var(--text-xs)', color: content.length > 270 ? 'var(--error)' : 'var(--text-muted)' }}>
@@ -218,7 +218,7 @@ const CommentSection = ({ postId, commentsCount }) => {
               fontSize: 'var(--text-sm)', cursor: 'pointer',
             }}
           >
-            Sign in to comment 💬
+            Sign in to comment
           </button>
         )}
       </div>
@@ -231,7 +231,7 @@ const CommentSection = ({ postId, commentsCount }) => {
           </div>
         ) : comments.length === 0 ? (
           <div style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 'var(--text-sm)' }}>
-            No comments yet. Be the first! 🎉
+            No comments yet. Be the first!
           </div>
         ) : (
           comments.map(comment => (

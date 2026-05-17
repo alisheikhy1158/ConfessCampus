@@ -107,7 +107,7 @@ const Settings = () => {
     try {
       await apiRequest('/users/delete', { method: 'DELETE' });
       logout();
-      toast.info('Account deleted. Goodbye 👋');
+      toast.info('Account deleted. Goodbye');
       navigate('/');
     } catch (err) {
       toast.error(err.message || 'Failed to delete account');
@@ -140,7 +140,7 @@ const Settings = () => {
           }}>
             <div style={{
               width: '48px', height: '48px', borderRadius: 'var(--radius-full)',
-              background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+              background: 'var(--primary)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'var(--white)', fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-base)',
               flexShrink: 0,
@@ -178,7 +178,7 @@ const Settings = () => {
               hint="Max 200 characters"
             />
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button onClick={handleSaveProfile} loading={savingProfile} icon="💾">
+              <Button onClick={handleSaveProfile} loading={savingProfile} icon="">
                 Save Profile
               </Button>
             </div>
@@ -205,7 +205,7 @@ const Settings = () => {
                       if (passErrors[field.name]) setPassErrors(prev => ({ ...prev, [field.name]: '' }));
                     }}
                     error={passErrors[field.name]}
-                    icon="🔒"
+                    icon=""
                     required
                   />
                   <button
@@ -217,12 +217,12 @@ const Settings = () => {
                       fontSize: '15px', color: 'var(--text-muted)',
                     }}
                   >
-                    {showPass[field.key] ? '🙈' : '👁️'}
+                    {showPass[field.key] ? 'Hide' : 'Show'}
                   </button>
                 </div>
               ))}
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button onClick={handleChangePassword} loading={savingPass} icon="🔒">
+                <Button onClick={handleChangePassword} loading={savingPass} icon="">
                   Update Password
                 </Button>
               </div>
@@ -233,10 +233,10 @@ const Settings = () => {
         {/* Privacy */}
         <SectionCard title="Privacy & Anonymity" subtitle="How your data is used on WhisperCampus">
           {[
-            { icon: '🔒', text: 'Anonymous posts are fully de-identified — even we can\'t trace them back to you.' },
-            { icon: '🗑️', text: 'Messages auto-delete after 24 hours from our servers.' },
-            { icon: '👁️', text: 'Anonymous posts never appear on your public profile.' },
-            { icon: '📊', text: 'We don\'t sell your data to third parties. Ever.' },
+            { icon: '', text: 'Anonymous posts are fully de-identified — even we can\'t trace them back to you.' },
+            { icon: '', text: 'Messages auto-delete after 24 hours from our servers.' },
+            { icon: '', text: 'Anonymous posts never appear on your public profile.' },
+            { icon: '', text: 'We don\'t sell your data to third parties. Ever.' },
           ].map((item, i) => (
             <div key={i} style={{
               display: 'flex', gap: '12px', padding: '12px',

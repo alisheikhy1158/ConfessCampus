@@ -119,7 +119,7 @@ const Signup = () => {
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{
             width: '56px', height: '56px', borderRadius: 'var(--radius-xl)',
-            background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+            background: 'var(--primary)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '28px', margin: '0 auto 16px',
             boxShadow: `0 8px 24px ${'var(--primary)'}40`,
@@ -206,14 +206,14 @@ const Signup = () => {
                   fontSize: '16px', color: 'var(--text-muted)',
                 }}
               >
-                {showPassword ? '🙈' : '👁️'}
+                {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
             <PasswordStrength password={form.password} />
           </div>
 
           <Button type="submit" fullWidth loading={loading} size="lg">
-            Create Account 🚀
+            Create Account
           </Button>
         </form>
 

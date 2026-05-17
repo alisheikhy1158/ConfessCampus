@@ -13,7 +13,7 @@ const categoryMeta = {
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
-const FeatureCard = ({ emoji, title, desc }) => (
+const FeatureCard = ({ title, desc }) => (
   <div style={{
     padding: '24px', background: 'var(--white)', borderRadius: 'var(--radius-xl)',
     border: `1px solid ${'var(--border)'}`, boxShadow: 'var(--shadow-sm)',
@@ -22,7 +22,6 @@ const FeatureCard = ({ emoji, title, desc }) => (
     onMouseEnter={e => { e.currentTarget.style.boxShadow = 'var(--shadow-md)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
     onMouseLeave={e => { e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; e.currentTarget.style.transform = 'none'; }}
   >
-    <div style={{ fontSize: '32px', marginBottom: '12px' }}>{emoji}</div>
     <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-base)', color: 'var(--text)', marginBottom: '8px' }}>{title}</h3>
     <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.65 }}>{desc}</p>
   </div>
@@ -39,25 +38,25 @@ const About = () => {
   const navigate = useNavigate();
 
   const features = [
-    { emoji: '🤫', title: 'Anonymous Confessions', desc: 'Share your campus secrets, feelings, and thoughts with complete anonymity. Your identity is never revealed.' },
-    { emoji: '💬', title: 'Open Discussions', desc: 'Ask questions, spark debates, and get answers from your fellow students. Mark threads as resolved when answered.' },
-    { emoji: '🔍', title: 'Lost & Found', desc: 'Lost your keys? Found a wallet? Our community-driven lost & found helps reunite items with their owners fast.' },
-    { emoji: '🚗', title: 'Campus Carpools', desc: 'Split costs and reduce your carbon footprint by sharing rides with fellow students going the same way.' },
-    { emoji: '🔒', title: 'Privacy First', desc: 'Every anonymous post is completely de-identified. We never store identifying information alongside anonymous content.' },
-    { emoji: '📱', title: 'Works Everywhere', desc: 'Fully responsive on desktop, tablet, and mobile. Use it on any device, anywhere on campus.' },
+    { emoji: '', title: 'Anonymous Confessions', desc: 'Share your campus secrets, feelings, and thoughts with complete anonymity. Your identity is never revealed.' },
+    { emoji: '', title: 'Open Discussions', desc: 'Ask questions, spark debates, and get answers from your fellow students. Mark threads as resolved when answered.' },
+    { emoji: '', title: 'Lost & Found', desc: 'Lost your keys? Found a wallet? Our community-driven lost & found helps reunite items with their owners fast.' },
+    { emoji: '', title: 'Campus Carpools', desc: 'Split costs and reduce your carbon footprint by sharing rides with fellow students going the same way.' },
+    { emoji: '', title: 'Privacy First', desc: 'Every anonymous post is completely de-identified. We never store identifying information alongside anonymous content.' },
+    { emoji: '', title: 'Works Everywhere', desc: 'Fully responsive on desktop, tablet, and mobile. Use it on any device, anywhere on campus.' },
   ];
 
   const values = [
-    { emoji: '🤝', title: 'Inclusive Community', desc: 'Everyone belongs here, regardless of major, year, or background.' },
-    { emoji: '💜', title: 'Safe Space', desc: 'We actively moderate and protect against harassment and harmful content.' },
-    { emoji: '🌱', title: 'Student-First', desc: 'Built specifically for the unique needs of university life.' },
+    { title: 'Inclusive Community', desc: 'Everyone belongs here, regardless of major, year, or background.' },
+    { title: 'Safe Space', desc: 'We actively moderate and protect against harassment and harmful content.' },
+    { title: 'Student-First', desc: 'Built specifically for the unique needs of university life.' },
   ];
 
   return (
     <Layout>
       {/* Hero */}
       <div style={{
-        background: `linear-gradient(135deg, ${'var(--primary)'} 0%, #9333EA 60%, ${'var(--rose)'} 100%)`,
+        background: 'var(--primary)',
         padding: '80px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden',
       }}>
         <div style={{
@@ -66,7 +65,7 @@ const About = () => {
           background: 'rgba(255,255,255,0.05)',
         }} />
         <div style={{ position: 'relative', maxWidth: '700px', margin: '0 auto' }}>
-          <div style={{ fontSize: '64px', marginBottom: '16px' }}>🤫</div>
+          <div style={{ fontSize: '64px', marginBottom: '16px' }}></div>
           <h1 style={{
             fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-4xl)',
             color: 'var(--white)', marginBottom: '16px', letterSpacing: '-1px',
@@ -91,14 +90,14 @@ const About = () => {
             onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
             onMouseLeave={e => e.currentTarget.style.transform = 'none'}
           >
-            Join for Free 🚀
+            Join for Free
           </button>
         </div>
       </div>
 
       {/* Stats bar */}
       <div style={{
-        background: `linear-gradient(90deg, #4338CA, ${'var(--primary)'})`,
+        background: '#4338CA',
         padding: '32px 24px',
       }}>
         <div style={{
@@ -161,7 +160,7 @@ const About = () => {
                 padding: '20px', borderRadius: 'var(--radius-xl)', background: meta.bg,
                 border: `1.5px solid ${meta.border}`, textAlign: 'center',
               }}>
-                <div style={{ fontSize: '36px', marginBottom: '8px' }}>{meta.emoji}</div>
+
                 <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, color: meta.text, fontSize: 'var(--text-base)' }}>{meta.label}</div>
               </div>
             ))}
@@ -179,7 +178,6 @@ const About = () => {
               padding: '28px', textAlign: 'center', background: 'var(--white)',
               borderRadius: 'var(--radius-xl)', border: `1px solid ${'var(--border)'}`, boxShadow: 'var(--shadow-sm)',
             }}>
-              <div style={{ fontSize: '36px', marginBottom: '12px' }}>{v.emoji}</div>
               <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-base)', color: 'var(--text)', marginBottom: '8px' }}>{v.title}</h3>
               <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.65 }}>{v.desc}</p>
             </div>
@@ -188,7 +186,7 @@ const About = () => {
 
         {/* CTA */}
         <div style={{
-          background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA)`,
+          background: 'var(--primary)',
           borderRadius: 'var(--radius-2xl)', padding: '48px', textAlign: 'center',
         }}>
           <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-2xl)', color: 'var(--white)', marginBottom: '12px' }}>

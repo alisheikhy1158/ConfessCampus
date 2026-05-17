@@ -15,7 +15,7 @@ const NotFound = () => {
           <div style={{
             fontFamily: 'var(--font-heading)', fontWeight: 800,
             fontSize: '120px', lineHeight: 1,
-            background: `linear-gradient(135deg, ${'var(--primary)'}, #9333EA, ${'var(--rose)'})`,
+            background: 'var(--primary)',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             backgroundClip: 'text', marginBottom: '8px',
             letterSpacing: '-4px',
@@ -23,7 +23,7 @@ const NotFound = () => {
             404
           </div>
 
-          <div style={{ fontSize: '56px', marginBottom: '20px' }}>🤫</div>
+          <div style={{ fontSize: '56px', marginBottom: '20px' }}></div>
 
           <h1 style={{
             fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-2xl)',
@@ -51,7 +51,7 @@ const NotFound = () => {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = `0 8px 24px ${'var(--primary)'}50`; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = `0 4px 16px ${'var(--primary)'}40`; }}
             >
-              🏠 Go to Feed
+              Back to Feed
             </button>
             <button
               onClick={() => navigate(-1)}

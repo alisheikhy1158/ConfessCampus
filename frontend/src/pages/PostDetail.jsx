@@ -1,5 +1,5 @@
 const categoryMeta = {
-  confession: { label: 'Confession', emoji: '', bg: 'var(--confession-bg)', text: 'var(--confession-text)', border: 'var(--confession-border)' },
+  confession: { label: 'Confession', bg: 'var(--confession-bg)', text: 'var(--confession-text)', border: 'var(--confession-border)' },
   discussion: { label: 'Discussion', emoji: '', bg: 'var(--discussion-bg)', text: 'var(--discussion-text)', border: 'var(--discussion-border)' },
   'lost-found': { label: 'Lost & Found', emoji: '', bg: 'var(--lost-found-bg)', text: 'var(--lost-found-text)', border: 'var(--lost-found-border)' },
   carpool: { label: 'Carpool', emoji: '', bg: 'var(--carpool-bg)', text: 'var(--carpool-text)', border: 'var(--carpool-border)' },
@@ -192,7 +192,7 @@ const PostDetail = () => {
                 <span style={{
                   padding: '4px 10px', borderRadius: 'var(--radius-full)', fontSize: 'var(--text-xs)',
                   fontWeight: 700, background: 'var(--success-light)', color: 'var(--success)',
-                }}>✓ Resolved</span>
+                }}>Resolved</span>
               )}
             </div>
           </div>
@@ -254,7 +254,7 @@ const PostDetail = () => {
                 color: liked ? 'var(--rose)' : 'var(--text-secondary)',
               }}
             >
-              {liked ? '❤️' : '🤍'} {likesCount} {likesCount === 1 ? 'Like' : 'Likes'}
+              {liked ? 'Liked' : 'Like'} • {likesCount} {likesCount === 1 ? 'Like' : 'Likes'}
             </button>
 
             <button
@@ -267,7 +267,7 @@ const PostDetail = () => {
                 color: 'var(--text-secondary)', transition: 'var(--transition-fast)',
               }}
             >
-              🔗 Share
+              Share
             </button>
 
             <div style={{ flex: 1 }} />
@@ -284,7 +284,7 @@ const PostDetail = () => {
                 onMouseEnter={e => { e.currentTarget.style.background = 'var(--rose-light)'; e.currentTarget.style.color = 'var(--rose)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)'; }}
               >
-                ⚑ Report
+                Report
               </button>
             )}
 
@@ -299,7 +299,7 @@ const PostDetail = () => {
                   fontFamily: 'var(--font-body)', fontWeight: 600,
                 }}
               >
-                {deleting ? 'Deleting...' : '🗑️ Delete'}
+                {deleting ? 'Deleting...' : 'Delete'}
               </button>
             )}
           </div>

@@ -13,11 +13,11 @@ const categoryMeta = {
 
 
 const categories = [
-  { value: '', label: 'All Posts', emoji: '🌐' },
-  { value: 'confession', label: 'Confessions', emoji: '🤫' },
-  { value: 'discussion', label: 'Discussions', emoji: '💬' },
-  { value: 'lost-found', label: 'Lost & Found', emoji: '🔍' },
-  { value: 'carpool', label: 'Carpool', emoji: '🚗' },
+  { value: '', label: 'All Posts' },
+  { value: 'confession', label: 'Confessions' },
+  { value: 'discussion', label: 'Discussions' },
+  { value: 'lost-found', label: 'Lost & Found' },
+  { value: 'carpool', label: 'Carpool' },
 ];
 
 const CategoryFilter = ({ active, onChange }) => {

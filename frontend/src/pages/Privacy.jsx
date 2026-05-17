@@ -18,11 +18,11 @@ const Privacy = () => (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '48px 24px' }}>
       {/* Header */}
       <div style={{
-        background: `linear-gradient(135deg, ${'var(--primary-light)'}, ${'var(--rose-light)'})`,
+        background: 'var(--bg-light)',
         borderRadius: 'var(--radius-xl)', padding: '32px', marginBottom: '40px',
         border: `1px solid ${'var(--primary-mid)'}`,
       }}>
-        <div style={{ fontSize: '48px', marginBottom: '12px' }}>🔒</div>
+        <div style={{ fontSize: '48px', marginBottom: '12px' }}></div>
         <h1 style={{
           fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 'var(--text-2xl)',
           color: 'var(--text)', marginBottom: '8px', letterSpacing: '-0.5px',
@@ -59,7 +59,7 @@ const Privacy = () => (
             border: `1px solid ${'var(--primary-mid)'}`,
           }}>
             <p style={{ color: 'var(--primary)', fontWeight: 600, fontSize: 'var(--text-sm)' }}>
-              🔒 Technical Anonymity Guarantee
+              Technical Anonymity Guarantee
             </p>
           </div>
           <p>When you toggle "Post Anonymously," our system deliberately does not store a direct reference from the post to your user ID in a way that is accessible through normal application queries. Anonymous posts return <code style={{ background: 'var(--bg-muted)', padding: '1px 6px', borderRadius: '4px', fontSize: 'var(--text-xs)' }}>null</code> for user information in all API responses.</p>

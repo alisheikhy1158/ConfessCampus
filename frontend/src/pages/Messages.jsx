@@ -227,7 +227,7 @@ const Messages = () => {
                 </div>
               ) : chats.length === 0 ? (
                 <div style={{ padding: '32px 16px', textAlign: 'center' }}>
-                  <p style={{ fontSize: '32px', marginBottom: '8px' }}>💬</p>
+                  <p style={{ fontSize: '15px', marginBottom: '8px', fontWeight: 600 }}>Start a conversation</p>
                   <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>No chats yet</p>
                   <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: '4px' }}>
                     Send a message request from someone's profile
@@ -299,7 +299,7 @@ const Messages = () => {
                   <div style={{ display: 'flex', justifyContent: 'center' }}><Spinner /></div>
                 ) : messages.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
-                    <p style={{ fontSize: '32px', marginBottom: '8px' }}>👋</p>
+                    <p style={{ fontSize: '32px', marginBottom: '8px' }}></p>
                     <p style={{ fontSize: 'var(--text-sm)' }}>Say hello to start the conversation!</p>
                   </div>
                 ) : (
