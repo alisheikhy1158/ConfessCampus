@@ -12,7 +12,7 @@ const categoryMeta = {
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Heart, MessageCircle, Share2, Flag } from 'lucide-react';
+import { Heart, MessageCircle, Flag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { apiRequest } from '../api/config';
 import { formatTimeAgo, truncateText } from '../utils/helpers';
@@ -241,25 +241,6 @@ const PostCard = ({ post, onUpdate }) => {
           <MessageCircle size={16} />
           <span>Comments</span>
           <span>{post.commentsCount ?? post.comments?.length ?? 0}</span>
-        </button>
-
-        {/* Share */}
-        <button
-          onClick={e => {
-            e.stopPropagation();
-            navigator.clipboard?.writeText(window.location.origin + `/post/${post._id}`);
-          }}
-          style={{
-            display: 'flex', alignItems: 'center', gap: '5px', padding: '6px 12px',
-            borderRadius: 'var(--radius-full)', border: 'none', cursor: 'pointer',
-            background: 'transparent', color: 'var(--text-secondary)',
-            fontSize: 'var(--text-sm)', fontFamily: 'var(--font-body)', fontWeight: 500,
-            transition: 'var(--transition-fast)',
-          }}
-          onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-muted)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-        >
-          <Share2 size={16} />
         </button>
 
         <div style={{ flex: 1 }} />

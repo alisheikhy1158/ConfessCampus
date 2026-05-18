@@ -4,11 +4,12 @@ import Post from '../models/Post.js';
 // Helper function to format comment data - hide user info if anonymous
 const formatCommentData = (comment) => {
     const commentObj = comment.toObject ? comment.toObject() : comment;
+    const commentUserId = commentObj.user?._id || commentObj.user || null;
+    commentObj.userId = commentUserId;
     
     if (commentObj.isAnonymous) {
         // Remove user data for anonymous comments
         commentObj.user = null;
-        commentObj.userId = null;
     }
     
     return commentObj;

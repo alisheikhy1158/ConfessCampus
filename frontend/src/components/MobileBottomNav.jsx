@@ -5,6 +5,7 @@ const MobileBottomNav = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const currentUserId = user?._id || user?.id;
 
   // Don't show on login/signup pages or messages (full screen)
   const hiddenPaths = ['/login', '/signup', '/messages'];
@@ -17,7 +18,7 @@ const MobileBottomNav = () => {
     { icon: 'S', label: 'Search', path: '/search' },
     { icon: 'P', label: 'Post', path: '/create', highlight: true },
     { icon: 'M', label: 'DMs', path: '/messages' },
-    { icon: 'U', label: 'Profile', path: user ? `/profile/${user._id}` : '/login' },
+    { icon: 'U', label: 'Profile', path: currentUserId ? `/profile/${currentUserId}` : '/login' },
   ];
 
   return (

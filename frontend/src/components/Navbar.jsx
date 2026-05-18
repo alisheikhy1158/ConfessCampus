@@ -88,6 +88,7 @@ const UserMenu = ({ user, logout }) => {
   }, []);
 
   const initials = user?.name?.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
+  const currentUserId = user?._id || user?.id;
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
@@ -116,10 +117,10 @@ const UserMenu = ({ user, logout }) => {
         }}>
           <div style={{ padding: '16px', borderBottom: `1px solid ${'var(--border-light)'}` }}>
             <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: 'var(--text-base)', color: 'var(--text)' }}>{user?.name}</div>
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', marginTop: '2px' }}>@{user?.username}</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', marginTop: '2px' }}>{user?.username ? '@' + user.username : user?.name}</div>
           </div>
           {[
-            { label: 'My Profile', action: () => { navigate(`/profile/${user?._id}`); setOpen(false); } },
+            { label: 'My Profile', action: () => { navigate(`/profile/${currentUserId}`); setOpen(false); } },
             { label: 'Messages', action: () => { navigate('/messages'); setOpen(false); } },
             { label: 'Settings', action: () => { navigate('/settings'); setOpen(false); } },
           ].map(item => (
@@ -161,12 +162,13 @@ const UserMenu = ({ user, logout }) => {
 
 const MobileMenu = ({ open, onClose, user, logout }) => {
   const navigate = useNavigate();
+  const currentUserId = user?._id || user?.id;
   const links = [
     { to: '/feed', label: 'Feed' },
     { to: '/messages', label: 'Messages' },
     { to: '/search', label: 'Search' },
     { to: '/create', label: 'Create Post' },
-    { to: `/profile/${user?._id}`, label: 'My Profile' },
+    { to: `/profile/${currentUserId}`, label: 'My Profile' },
     { to: '/about', label: 'About' },
     { to: '/contact', label: 'Contact' },
   ];
@@ -201,7 +203,7 @@ const MobileMenu = ({ open, onClose, user, logout }) => {
         {user && (
           <div style={{ padding: '16px 20px', borderBottom: `1px solid ${'var(--border-light)'}`, background: 'var(--bg-muted)' }}>
             <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, color: 'var(--text)' }}>{user.name}</div>
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>@{user.username}</div>
+            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>{user?.username ? '@' + user.username : user?.name}</div>
           </div>
         )}
 
@@ -303,7 +305,7 @@ const Navbar = () => {
                   onMouseEnter={e => { e.currentTarget.style.background = 'var(--primary-hover)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                 >
-                  ✏️ Post
+                  Post
                 </button>
                 <UserMenu user={user} logout={logout} />
               </>

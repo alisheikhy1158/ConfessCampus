@@ -113,9 +113,10 @@ const Profile = () => {
         }}>
           {/* Cover banner */}
           <div style={{
-            height: '120px',
+            height: '140px',
             background: 'var(--primary)',
             position: 'relative',
+            borderBottom: '8px solid var(--white)'
           }}>
             <div style={{
               position: 'absolute', inset: 0,
@@ -125,7 +126,7 @@ const Profile = () => {
 
           <div style={{ padding: '0 28px 28px' }}>
             {/* Avatar row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '-36px', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '-20px', marginBottom: '16px' }}>
               <div style={{
                 width: '80px', height: '80px', borderRadius: 'var(--radius-full)',
                 background: 'var(--primary)',
@@ -142,7 +143,6 @@ const Profile = () => {
                   <Button
                     variant={editing ? 'secondary' : 'outline'}
                     onClick={() => { setEditing(!editing); setEditErrors({}); }}
-                    icon={editing ? '✕' : '✏️'}
                   >
                     {editing ? 'Cancel' : 'Edit Profile'}
                   </Button>
@@ -176,7 +176,7 @@ const Profile = () => {
                   {profile.name}
                 </h1>
                 <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)', marginBottom: '10px' }}>
-                  @{profile.username}
+                  {profile.username ? '@' + profile.username : profile.name}
                 </p>
                 {profile.bio && (
                   <p style={{ fontSize: 'var(--text-base)', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '16px' }}>
@@ -231,7 +231,7 @@ const Profile = () => {
               title="No public posts yet"
               description={isMe ? "Create your first post to get started!" : "This user hasn't made any public posts."}
               action={isMe && (
-                <Button onClick={() => navigate('/create')} icon="✏️">Create Post</Button>
+                <Button onClick={() => navigate('/create')}>Create Post</Button>
               )}
             />
           ) : (

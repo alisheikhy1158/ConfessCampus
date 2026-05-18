@@ -6,12 +6,24 @@ import AvatarOrAnon from './AvatarOrAnon';
 import { Toggle } from './FormComponents';
 import { Spinner } from './Loading';
 import { formatTimeAgo } from '../utils/helpers';
+import { commentsAPI } from '../api/services';
 
 const CommentItem = ({ comment, postOwnerId, onDelete }) => {
   const { user } = useAuth();
   const [deleting, setDeleting] = useState(false);
-  const commentAuthorId = comment.user?._id || comment.user;
-  const isOwner = !!user?._id && !!commentAuthorId && String(user._id) === String(commentAuthorId);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [draft, setDraft] = useState(comment.content);
+
+  const currentUserId = user?._id || user?.id;
+  const commentAuthorId =
+    comment.user?._id ||
+    comment.user?.id ||
+    comment.userId ||
+    (typeof comment.user === 'string' ? comment.user : null);
+
+  const isOwner = !!currentUserId && !!commentAuthorId && String(currentUserId) === String(commentAuthorId);
   const authorLabel = comment.isAnonymous
     ? (isOwner ? 'Anonymous · You' : 'Anonymous')
     : (isOwner ? 'You' : (comment.user?.name || 'User'));
@@ -24,6 +36,25 @@ const CommentItem = ({ comment, postOwnerId, onDelete }) => {
       onDelete(comment._id);
     } catch {}
     setDeleting(false);
+    setMenuOpen(false);
+  };
+
+  const handleSave = async () => {
+    const trimmed = draft.trim();
+    if (!trimmed || trimmed === comment.content) {
+      setEditing(false);
+      setDraft(comment.content);
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const data = await commentsAPI.update(comment._id, trimmed);
+      onDelete(comment._id, data.comment);
+      setEditing(false);
+      setMenuOpen(false);
+    } catch {}
+    setSaving(false);
   };
 
   return (
@@ -46,25 +77,97 @@ const CommentItem = ({ comment, postOwnerId, onDelete }) => {
             {formatTimeAgo(comment.createdAt)}
           </span>
         </div>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
-          {comment.content}
-        </p>
+        {editing ? (
+          <div style={{ marginTop: '4px' }}>
+            <textarea
+              value={draft}
+              onChange={e => setDraft(e.target.value)}
+              rows={3}
+              maxLength={300}
+              style={{
+                width: '100%', padding: '10px 12px', borderRadius: 'var(--radius-md)',
+                border: `1px solid ${'var(--border)'}`, fontFamily: 'var(--font-body)',
+                fontSize: 'var(--text-sm)', color: 'var(--text)', resize: 'vertical',
+              }}
+            />
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                style={{
+                  padding: '6px 12px', borderRadius: 'var(--radius-full)', border: 'none',
+                  background: 'var(--primary)', color: 'var(--white)', cursor: 'pointer',
+                  fontSize: 'var(--text-xs)', fontWeight: 600,
+                }}
+              >
+                {saving ? 'Saving...' : 'Save'}
+              </button>
+              <button
+                onClick={() => { setEditing(false); setDraft(comment.content); }}
+                style={{
+                  padding: '6px 12px', borderRadius: 'var(--radius-full)', border: 'none',
+                  background: 'var(--bg-muted)', color: 'var(--text-secondary)', cursor: 'pointer',
+                  fontSize: 'var(--text-xs)', fontWeight: 600,
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
+            {comment.content}
+          </p>
+        )}
       </div>
-      {isOwner && (
-        <button
-          onClick={handleDelete}
-          disabled={deleting}
-          style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: 'var(--text-muted)', fontSize: 'var(--text-xs)', flexShrink: 0,
-            padding: '4px', borderRadius: 'var(--radius-sm)', transition: 'var(--transition-fast)',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.color = 'var(--rose)'; e.currentTarget.style.background = 'var(--rose-light)'; }}
-          onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'none'; }}
-          title="Delete comment"
-        >
-          {deleting ? '...' : 'Delete'}
-        </button>
+      {isOwner && !editing && (
+        <div style={{ position: 'relative', flexShrink: 0 }}>
+          <button
+            onClick={() => setMenuOpen(prev => !prev)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: 'var(--text-muted)', fontSize: '18px', lineHeight: 1,
+              padding: '4px 8px', borderRadius: 'var(--radius-sm)', transition: 'var(--transition-fast)',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg-muted)'; e.currentTarget.style.color = 'var(--text)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+            title="Comment actions"
+            aria-label="Comment actions"
+          >
+            ...
+          </button>
+
+          {menuOpen && (
+            <div style={{
+              position: 'absolute', top: '30px', right: 0, minWidth: '120px',
+              background: 'var(--white)', border: `1px solid ${'var(--border)'}`,
+              borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-md)', zIndex: 20,
+              overflow: 'hidden',
+            }}>
+              <button
+                onClick={() => { setEditing(true); setMenuOpen(false); }}
+                style={{
+                  width: '100%', textAlign: 'left', padding: '9px 12px', border: 'none',
+                  background: 'transparent', color: 'var(--text)', cursor: 'pointer',
+                  fontSize: 'var(--text-xs)',
+                }}
+              >
+                Edit
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                style={{
+                  width: '100%', textAlign: 'left', padding: '9px 12px', border: 'none',
+                  background: 'transparent', color: 'var(--rose)', cursor: 'pointer',
+                  fontSize: 'var(--text-xs)',
+                }}
+              >
+                {deleting ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
@@ -113,8 +216,13 @@ const CommentSection = ({ postId, commentsCount }) => {
     setSubmitting(false);
   };
 
-  const handleDelete = (commentId) => {
-    setComments(prev => prev.filter(c => c._id !== commentId));
+  const handleDelete = (commentId, updatedComment) => {
+    setComments(prev => {
+      if (updatedComment) {
+        return prev.map(c => (c._id === commentId ? updatedComment : c));
+      }
+      return prev.filter(c => c._id !== commentId);
+    });
   };
 
   return (

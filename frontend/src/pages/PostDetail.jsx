@@ -12,7 +12,7 @@ const categoryMeta = {
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Heart, Share2, Flag, ArrowLeft, Trash2 } from 'lucide-react';
+import { Heart, Flag, ArrowLeft, Trash2 } from 'lucide-react';
 import { postsAPI } from '../api/services';
 import { useAuth } from '../context/AuthContext';
 import Layout from '../components/Layout';
@@ -272,19 +272,6 @@ const PostDetail = () => {
             >
               <Heart size={16} fill={liked ? 'currentColor' : 'none'} />
               {liked ? 'Liked' : 'Like'} • {likesCount} {likesCount === 1 ? 'Like' : 'Likes'}
-            </button>
-
-            <button
-              onClick={() => { navigator.clipboard?.writeText(window.location.href); toast.info('Link copied!'); }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                padding: '8px 14px', borderRadius: 'var(--radius-full)', border: 'none',
-                cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: 500,
-                fontSize: 'var(--text-sm)', background: 'var(--bg-muted)',
-                color: 'var(--text-secondary)', transition: 'var(--transition-fast)',
-              }}
-            >
-              Share
             </button>
 
             <div style={{ flex: 1 }} />

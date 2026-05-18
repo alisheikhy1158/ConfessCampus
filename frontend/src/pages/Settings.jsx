@@ -150,7 +150,7 @@ const Settings = () => {
             <div>
               <div style={{ fontWeight: 700, color: 'var(--text)', fontSize: 'var(--text-base)' }}>{user?.name}</div>
               <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
-                @{user?.username} · {user?.email}
+                {user?.username ? '@' + user.username : user?.name} · {user?.email}
               </div>
             </div>
           </div>
