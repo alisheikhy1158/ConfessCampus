@@ -1,11 +1,46 @@
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { messagesAPI } from '../api/services';
 
 const MobileBottomNav = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const currentUserId = user?._id || user?.id;
+  const [pendingRequests, setPendingRequests] = useState(0);
+  const [unreadChats, setUnreadChats] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+
+    const loadPending = async () => {
+      try {
+        const data = await messagesAPI.getRequests();
+        if (!active) return;
+        setPendingRequests((data.requests || []).filter(r => r.status === 'pending').length);
+      } catch {
+        // ignore
+      }
+      try {
+        const data = await messagesAPI.getChats();
+        if (!active) return;
+        setUnreadChats((data.chats || []).filter(chat => (chat.unreadCount || 0) > 0).length);
+      } catch {
+        // ignore
+      }
+    };
+
+    loadPending();
+    const handleMessagesUpdate = () => { if (active) loadPending(); };
+    window.addEventListener('whispercampus:messagesUpdate', handleMessagesUpdate);
+
+    return () => {
+      active = false;
+      window.removeEventListener('whispercampus:messagesUpdate', handleMessagesUpdate);
+    };
+  }, [user]);
 
   // Don't show on login/signup pages or messages (full screen)
   const hiddenPaths = ['/login', '/signup', '/messages'];
@@ -33,6 +68,7 @@ const MobileBottomNav = () => {
     }}>
       {navItems.map(item => {
         const active = isActive(item.path.split('?')[0]);
+        const showBadge = item.path === '/messages' && (pendingRequests > 0 || unreadChats > 0);
         return (
           <button
             key={item.path}
@@ -57,12 +93,20 @@ const MobileBottomNav = () => {
               </div>
             ) : (
               <span style={{
+                position: 'relative',
                 fontSize: '20px',
                 filter: active ? 'none' : 'grayscale(0.3)',
                 transform: active ? 'scale(1.15)' : 'scale(1)',
                 transition: 'var(--transition-fast)',
               }}>
                 {item.icon}
+                {showBadge && (
+                  <span style={{
+                    position: 'absolute', top: '-4px', right: '-10px',
+                    width: '10px', height: '10px', borderRadius: '50%',
+                    background: 'var(--rose)', border: '2px solid var(--white)',
+                  }} />
+                )}
               </span>
             )}
             <span style={{

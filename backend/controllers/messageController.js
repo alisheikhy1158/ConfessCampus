@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Message from '../models/Message.js';
 import Chat from '../models/Chat.js';
 import ChatRequest from '../models/ChatRequest.js';
@@ -54,6 +55,10 @@ const sendChatRequest = async (req, res) => {
             chatRequest: populatedRequest
         });
     } catch (error) {
+        const isDuplicateKey = error.code === 11000 || error.code === 11001 || error.codeName === 'DuplicateKey' || (error.message && error.message.toLowerCase().includes('duplicate key'));
+        if (isDuplicateKey) {
+            return res.status(400).json({ message: 'Chat request already exists' });
+        }
         res.status(500).json({ message: 'Server error', details: error.message });
     }
 };
@@ -209,7 +214,8 @@ const sendMessage = async (req, res) => {
         const message = new Message({
             chatId,
             sender: userId,
-            content
+            content,
+            readBy: [userId]
         });
 
         const savedMessage = await message.save();
@@ -249,6 +255,11 @@ const getMessages = async (req, res) => {
         if (chat.user1.toString() !== userId && chat.user2.toString() !== userId) {
             return res.status(403).json({ success: false, message: 'Unauthorized - You are not part of this chat' });
         }
+
+        await Message.updateMany(
+            { chatId, sender: { $ne: userId }, readBy: { $ne: userId } },
+            { $push: { readBy: userId } }
+        );
 
         const messages = await Message.find({ chatId })
             .populate('sender', 'name')
@@ -290,10 +301,22 @@ const getChats = async (req, res) => {
             })
             .sort({ lastMessageTime: -1 });
 
+        const chatsWithUnread = await Promise.all(chats.map(async (chat) => {
+            const unreadCount = await Message.countDocuments({
+                chatId: chat._id,
+                sender: { $ne: userId },
+                readBy: { $ne: userId }
+            });
+            return {
+                ...chat.toObject(),
+                unreadCount
+            };
+        }));
+
         res.status(200).json({
             success: true,
-            count: chats.length,
-            chats
+            count: chatsWithUnread.length,
+            chats: chatsWithUnread
         });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server error', details: error.message });

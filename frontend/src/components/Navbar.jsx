@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { messagesAPI } from '../api/services';
 
 const Logo = () => (
   <div
@@ -55,13 +56,13 @@ const SearchBar = ({ onSearch }) => {
   );
 };
 
-const NavLink = ({ to, label, active }) => {
+const NavLink = ({ to, label, active, badge }) => {
   const navigate = useNavigate();
   return (
     <button
       onClick={() => navigate(to)}
       style={{
-        display: 'flex', alignItems: 'center', gap: '6px',
+        display: 'flex', alignItems: 'center', gap: '8px',
         padding: '8px 14px', borderRadius: 'var(--radius-full)',
         background: active ? 'var(--primary-light)' : 'transparent',
         color: active ? 'var(--primary)' : 'var(--text-secondary)',
@@ -72,6 +73,17 @@ const NavLink = ({ to, label, active }) => {
       onMouseLeave={e => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
     >
       <span className="hide-mobile">{label}</span>
+      {badge ? (
+        <span style={{
+          minWidth: '18px', height: '18px', borderRadius: '999px',
+          background: 'var(--rose)', color: 'var(--white)',
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '10px', fontWeight: 700,
+          padding: '0 6px',
+        }}>
+          {badge}
+        </span>
+      ) : null}
     </button>
   );
 };
@@ -253,12 +265,45 @@ const Navbar = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState(0);
+  const [unreadChats, setUnreadChats] = useState(0);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+
+    const loadMessagesState = async () => {
+      try {
+        const requestsData = await messagesAPI.getRequests();
+        if (!active) return;
+        setPendingRequests((requestsData.requests || []).filter(r => r.status === 'pending').length);
+      } catch {
+        // ignore
+      }
+      try {
+        const chatsData = await messagesAPI.getChats();
+        if (!active) return;
+        setUnreadChats((chatsData.chats || []).filter(chat => (chat.unreadCount || 0) > 0).length);
+      } catch {
+        // ignore
+      }
+    };
+
+    loadMessagesState();
+    const handleMessagesUpdate = () => { if (active) loadMessagesState(); };
+    window.addEventListener('whispercampus:messagesUpdate', handleMessagesUpdate);
+
+    return () => {
+      active = false;
+      window.removeEventListener('whispercampus:messagesUpdate', handleMessagesUpdate);
+    };
+  }, [user]);
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -285,7 +330,12 @@ const Navbar = () => {
 
           <nav className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <NavLink to="/feed" label="Feed" active={isActive('/feed')} />
-            <NavLink to="/messages" label="DMs" active={isActive('/messages')} />
+            <NavLink
+              to="/messages"
+              label="DMs"
+              active={isActive('/messages')}
+              badge={pendingRequests + unreadChats > 0 ? pendingRequests + unreadChats : undefined}
+            />
             <NavLink to="/about" label="About" active={isActive('/about')} />
           </nav>
 

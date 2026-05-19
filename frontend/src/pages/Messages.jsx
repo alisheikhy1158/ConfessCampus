@@ -125,6 +125,10 @@ const Messages = () => {
     try {
       const data = await messagesAPI.getChats();
       setChats(data.chats || []);
+      if (activeChat) {
+        const refreshed = (data.chats || []).find(c => c._id === activeChat._id);
+        if (refreshed) setActiveChat(refreshed);
+      }
     } catch {}
     setLoadingChats(false);
   };
@@ -142,6 +146,8 @@ const Messages = () => {
     try {
       const data = await messagesAPI.getMessages(chat._id);
       setMessages(data.messages || []);
+      await fetchChats();
+      window.dispatchEvent(new Event('whispercampus:messagesUpdate'));
     } catch {}
     setLoadingMessages(false);
   };
@@ -175,10 +181,13 @@ const Messages = () => {
     try {
       await messagesAPI.acceptRequest(reqId);
       setRequests(prev => prev.filter(r => r._id !== reqId));
+      setShowRequests(false);
       toast.success('Chat request accepted!');
-      fetchChats();
+      await fetchChats();
+      await fetchRequests();
+      window.dispatchEvent(new Event('whispercampus:messagesUpdate'));
     } catch (err) {
-      toast.error(err.message || 'Failed');
+      toast.error(err.message || 'Failed to accept request');
     }
   };
 
@@ -186,7 +195,12 @@ const Messages = () => {
     try {
       await messagesAPI.rejectRequest(reqId);
       setRequests(prev => prev.filter(r => r._id !== reqId));
-    } catch {}
+      setShowRequests(false);
+      await fetchRequests();
+      window.dispatchEvent(new Event('whispercampus:messagesUpdate'));
+    } catch (err) {
+      toast.error(err.message || 'Failed to reject request');
+    }
   };
 
   const getOtherUser = (chat) =>
@@ -284,6 +298,15 @@ const Messages = () => {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text)', marginBottom: '2px' }}>
                         {other?.name}
+                        {chat.unreadCount > 0 && (
+                          <span style={{
+                            marginLeft: '8px', padding: '2px 8px', borderRadius: '999px',
+                            background: 'var(--rose)', color: 'var(--white)', fontSize: '10px',
+                            fontWeight: 700, verticalAlign: 'middle', letterSpacing: '0.01em'
+                          }}>
+                            New
+                          </span>
+                        )}
                       </div>
                       <div style={{
                         fontSize: 'var(--text-xs)', color: 'var(--text-muted)',
