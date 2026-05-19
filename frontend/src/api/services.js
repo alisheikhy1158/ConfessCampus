@@ -22,7 +22,7 @@ export const authAPI = {
   }),
 
   googleLogin: () => {
-    window.location.href = 'http://localhost:8000/api/auth/google';
+    window.location.href = `${BASE_URL}/auth/google`;
   },
 };
 
