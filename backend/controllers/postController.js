@@ -73,7 +73,7 @@ const createPost = async (req, res) => {
             content,
             category,
             title: title || null,
-            isAnonymous: user.isAnonymous,
+            isAnonymous: typeof req.body.isAnonymous === 'boolean' ? req.body.isAnonymous : user.isAnonymous,
             user: userId,
             itemType: itemType || null,
             itemDescription: itemDescription || null,
